@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -100,23 +101,26 @@ public class MainActivity extends AppCompatActivity {
 
     //todo 15
     private void saveImageToGalery(Bitmap finalBitmap) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        Toast.makeText(this, root, Toast.LENGTH_SHORT).show();
-        File myDir = new File(root + "/gzeinnumer");
-        myDir.mkdirs();
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
 
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        Toast.makeText(this, root, Toast.LENGTH_SHORT).show();
+        File myDir = new File(root + "/gzeinnumer1");
+        myDir.mkdirs();
+
         //todo 16
         String imageName = "Image-"+n+".jpg";
         File file = new File(myDir, imageName);
+
         if(file.exists()){
             file.delete();
         }
         try{
             FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             String resizeCoolerImagePath = file.getAbsolutePath();
             out.flush();
             out.close();
@@ -124,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
 //            saveToSharedPreferences("coolerImageName", imageName, MainActivity.this);
 //
 //            txvCoolerPicPath.setText(imageName);
-            Toast.makeText(this, "Your Photo Save and Resize Success", Toast.LENGTH_SHORT).show();
+            //location path
+            Toast.makeText(this, "Your Photo Save and Resize Success " + myDir + "/" + imageName, Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(this, "Exaception Throw : " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -134,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }
 
 
